@@ -25,7 +25,6 @@ public class Tarefa {
 
     private String descricao;
 
-    @Column(nullable = false)
     private LocalDate prazo;
 
     private Long duracao;
@@ -34,7 +33,7 @@ public class Tarefa {
     private boolean concluido;
 
     @ManyToOne
-    @JoinColumn(name = "departamento_id")
+    @JoinColumn(name = "departamento_id", nullable = false)
     @JsonBackReference
     private Departamento departamento;
 
@@ -49,7 +48,5 @@ public class Tarefa {
         this.prazo = data.prazo();
         this.duracao = data.duracao();
         this.concluido = data.concluido();
-        this.departamento.setNome(data.departamento());
-        this.pessoa.setNome(data.pessoa());
     }
 }
