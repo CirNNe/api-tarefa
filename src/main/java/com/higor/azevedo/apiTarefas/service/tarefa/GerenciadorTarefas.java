@@ -1,9 +1,11 @@
 package com.higor.azevedo.apiTarefas.service.tarefa;
 
+import com.higor.azevedo.apiTarefas.model.Pessoa;
 import com.higor.azevedo.apiTarefas.model.Tarefa;
 import com.higor.azevedo.apiTarefas.repository.TarefaRepository;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Component
@@ -35,5 +37,21 @@ public class GerenciadorTarefas {
             }
         }
         return horasGastas;
+    }
+
+    public Long calculaMediaHoras(Pessoa pessoa, LocalDate inicio, LocalDate fim) throws Exception {
+        List<Tarefa> tarefasPorPeriodo = buscarTarefasPorPeriodo(
+                pessoa, inicio, fim
+        );
+
+        if (tarefasPorPeriodo.isEmpty()) {
+            return 0L;
+        }
+        Long horasGastas = calculaHorasTarefas(tarefasPorPeriodo);
+        return horasGastas / tarefasPorPeriodo.size();
+    }
+
+    public List<Tarefa> buscarTarefasPorPeriodo(Pessoa pessoa, LocalDate inicio, LocalDate fim) throws Exception {
+        return repository.findByPessoaAndPrazoBetween(pessoa, inicio, fim).orElseThrow(() -> new Exception("Tarefas não encontradas."));
     }
 }
