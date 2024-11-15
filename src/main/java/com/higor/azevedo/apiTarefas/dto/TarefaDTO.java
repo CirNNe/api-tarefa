@@ -1,14 +1,16 @@
 package com.higor.azevedo.apiTarefas.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDate;
 
 public record TarefaDTO(
         String titulo,
         String descricao,
-        LocalDate prazo,
+        @JsonFormat(pattern = "dd/MM/yyyy") LocalDate prazo,
         Long duracao,
         boolean concluido,
-        String departamento,
-        String pessoa
+        DepartamentoDTO departamento,
+        String nomePessoa
 ) {
 }
