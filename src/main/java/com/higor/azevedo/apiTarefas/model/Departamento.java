@@ -1,6 +1,8 @@
 package com.higor.azevedo.apiTarefas.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.higor.azevedo.apiTarefas.dto.DepartamentoDTO;
+import com.higor.azevedo.apiTarefas.repository.DepartamentoRepository;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,4 +30,8 @@ public class Departamento {
 
     @OneToMany(mappedBy = "departamento")
     private List<Tarefa> tarefas;
+
+    public Departamento(DepartamentoDTO data) {
+        this.nome = data.nome();
+    }
 }

@@ -1,4 +1,6 @@
 package com.higor.azevedo.apiTarefas.dto;
 
-public record PessoaDTO(String nome, String departamento, Long horasGastasTarefas) {
+import java.util.List;
+
+public record PessoaDTO(String nome, DepartamentoDTO departamento, List<TarefaDTO> tarefas) {
 }

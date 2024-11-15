@@ -1,6 +1,7 @@
 package com.higor.azevedo.apiTarefas.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.higor.azevedo.apiTarefas.dto.TarefaDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -41,4 +42,14 @@ public class Tarefa {
     @JoinColumn(name = "pessoa_id", referencedColumnName = "id")
     @JsonBackReference
     private Pessoa pessoa;
+
+    public Tarefa(TarefaDTO data) {
+        this.titulo = data.titulo();
+        this.descricao = data.descricao();
+        this.prazo = data.prazo();
+        this.duracao = data.duracao();
+        this.concluido = data.concluido();
+        this.departamento.setNome(data.departamento());
+        this.pessoa.setNome(data.pessoa());
+    }
 }
