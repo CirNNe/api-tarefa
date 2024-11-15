@@ -23,8 +23,8 @@ public class TarefaController {
     }
 
     @PutMapping("/alocar/{id}")
-    public ResponseEntity<TarefaDTO> alocarPessoa(@PathVariable("id") Long idTarefa, @RequestBody Long idPessoa) throws Exception {
-        TarefaDTO tarefa = tarefaService.alocar(idTarefa, idPessoa);
+    public ResponseEntity<TarefaDTO> alocar(@PathVariable("id") Long idTarefa, @RequestBody Long idPessoa) throws Exception {
+        TarefaDTO tarefa = tarefaService.alocarPessoa(idTarefa, idPessoa);
         return ResponseEntity.status(HttpStatus.OK).body(tarefa);
     }
 

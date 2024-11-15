@@ -41,11 +41,13 @@ public class TarefaService {
         return tarefaDTO;
     }
 
-    public TarefaDTO alocar(Long idTarefa, Long idPessoa) throws Exception {
+    public TarefaDTO alocarPessoa(Long idTarefa, Long idPessoa) throws Exception {
         Pessoa pessoa = gerenciadorPessoas.buscarPorId(idPessoa);
         Tarefa tarefa = gerenciadorTarefas.buscarPorId(idTarefa);
+        Departamento departamentoPessoa = pessoa.getDepartamento();
+        Departamento departamentoTarefa = tarefa.getDepartamento();
 
-        if (pessoa.getDepartamento().getNome().equalsIgnoreCase(tarefa.getDepartamento().getNome())) {
+        if (departamentoPessoa == departamentoTarefa) {
             tarefa.setPessoa(pessoa);
             gerenciadorTarefas.salvar(tarefa);
             return TarefaDTO.criaTarefaDTO(tarefa, pessoa.getNome());
