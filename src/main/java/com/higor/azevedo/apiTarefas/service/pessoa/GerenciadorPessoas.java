@@ -24,4 +24,8 @@ public class GerenciadorPessoas {
     public Pessoa buscarPorId(Long id) throws Exception {
         return repository.findById(id).orElseThrow(() -> new Exception("Pessoa não encontrada."));
     }
+
+    public Pessoa buscarPorNome(String nome) throws Exception {
+        return repository.findByNome(String.valueOf(nome)).orElseThrow(() -> new Exception("Pessoa não encontrada."));
+    }
 }
