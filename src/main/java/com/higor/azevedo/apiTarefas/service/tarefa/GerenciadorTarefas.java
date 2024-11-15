@@ -26,4 +26,14 @@ public class GerenciadorTarefas {
     public List<Tarefa> buscarTarefasPendentes() throws Exception {
        return repository.findTop3ByPessoaIsNullOrderByPrazoAsc().orElseThrow(() -> new Exception("Tarefas não encontradas."));
     }
+
+    public Long calculaHorasTarefas(List<Tarefa> tarefaList) {
+        long horasGastas = 0L;
+        for (Tarefa tarefa : tarefaList) {
+            if (tarefa.getDuracao() != null) {
+                horasGastas += tarefa.getDuracao();
+            }
+        }
+        return horasGastas;
+    }
 }
