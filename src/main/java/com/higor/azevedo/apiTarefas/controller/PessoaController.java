@@ -21,4 +21,10 @@ public class PessoaController {
         PessoaDTO pessoa = pessoaService.salvar(pessoaDTO);
         return ResponseEntity.status(HttpStatus.OK).body(pessoa);
     }
+
+    @PutMapping("{id}")
+    public ResponseEntity<PessoaDTO> atualizar(@PathVariable("id") Long id, @RequestBody PessoaDTO pessoaDTO) throws Exception {
+        PessoaDTO pessoa = pessoaService.atualizar(id, pessoaDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(pessoa);
+    }
 }

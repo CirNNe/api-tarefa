@@ -28,4 +28,14 @@ public class PessoaService {
         gerenciadorPessoas.salvar(pessoa);
         return pessoaDTO;
     }
+
+    public PessoaDTO atualizar(Long id, PessoaDTO pessoaDTO) throws Exception {
+        Pessoa pessoa = new Pessoa(pessoaDTO);
+        pessoa.setId(id);
+        Departamento departamento = gerenciadorDepartamento.buscarPorNome(pessoaDTO.departamento().nome());
+        pessoa.setDepartamento(departamento);
+
+        gerenciadorPessoas.salvar(pessoa);
+        return pessoaDTO;
+    }
 }
