@@ -2,7 +2,6 @@ package com.higor.azevedo.apiTarefas.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.higor.azevedo.apiTarefas.dto.PessoaDTO;
-import com.higor.azevedo.apiTarefas.dto.TarefaDTO;
 import com.higor.azevedo.apiTarefas.repository.DepartamentoRepository;
 import jakarta.persistence.*;
 import lombok.*;
@@ -35,10 +34,5 @@ public class Pessoa {
 
     public Pessoa(PessoaDTO data) {
         this.nome = data.nome();
-        this.departamento = new Departamento(data.departamento());
-        for (TarefaDTO tarefaDTO : data.tarefas()) {
-            Tarefa tarefa = new Tarefa(tarefaDTO);
-            this.tarefas.add(tarefa);
-        }
     }
 }
