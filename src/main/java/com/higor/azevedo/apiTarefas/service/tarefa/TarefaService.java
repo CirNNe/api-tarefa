@@ -33,9 +33,10 @@ public class TarefaService {
         Departamento departamento = gerenciadorDepartamento.buscarPorNome(tarefaDTO.departamento().nome());
         tarefa.setDepartamento(departamento);
 
-        Pessoa pessoa = gerenciadorPessoas.buscarPorNome(tarefaDTO.nomePessoa());
-        tarefa.setPessoa(pessoa);
-
+        if (tarefaDTO.nomePessoa() != null) {
+            Pessoa pessoa = gerenciadorPessoas.buscarPorNome(tarefaDTO.nomePessoa());
+            tarefa.setPessoa(pessoa);
+        }
         gerenciadorTarefas.salvar(tarefa);
         return tarefaDTO;
     }
@@ -49,7 +50,6 @@ public class TarefaService {
             gerenciadorTarefas.salvar(tarefa);
             return TarefaDTO.criaTarefaDTO(tarefa, pessoa.getNome());
         }
-
         throw new Exception("Pessoa e tarefa pertencem a departamentos diferentes.");
     }
 
@@ -57,7 +57,11 @@ public class TarefaService {
         Tarefa tarefa = gerenciadorTarefas.buscarPorId(id);
         tarefa.setConcluido(true);
         gerenciadorTarefas.salvar(tarefa);
-        Pessoa pessoa = gerenciadorPessoas.buscarPorNome(tarefa.getPessoa().getNome());
-        return TarefaDTO.criaTarefaDTO(tarefa, pessoa.getNome());
+
+        if (tarefa.getPessoa() != null) {
+            Pessoa pessoa = gerenciadorPessoas.buscarPorId(tarefa.getPessoa().getId());
+            return TarefaDTO.criaTarefaDTO(tarefa, pessoa.getNome());
+        }
+        return TarefaDTO.criaTarefaDTO(tarefa);
     }
 }
