@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/tarefas")
 public class TarefaController {
@@ -32,5 +34,11 @@ public class TarefaController {
     public ResponseEntity<TarefaDTO> finalizar(@PathVariable("id") Long id) throws Exception {
         TarefaDTO tarefa = tarefaService.finalizar(id);
         return ResponseEntity.status(HttpStatus.OK).body(tarefa);
+    }
+
+    @GetMapping("/pendentes")
+    public ResponseEntity<List<TarefaDTO>> pendentes() throws Exception {
+        List<TarefaDTO> tarefas = tarefaService.listaTarefasPendentes();
+        return ResponseEntity.status(HttpStatus.OK).body(tarefas);
     }
 }

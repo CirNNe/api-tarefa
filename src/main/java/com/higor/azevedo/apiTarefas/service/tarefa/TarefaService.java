@@ -8,6 +8,9 @@ import com.higor.azevedo.apiTarefas.service.departamento.GerenciadorDepartamento
 import com.higor.azevedo.apiTarefas.service.pessoa.GerenciadorPessoas;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class TarefaService {
 
@@ -65,5 +68,18 @@ public class TarefaService {
             return TarefaDTO.criaTarefaDTO(tarefa, pessoa.getNome());
         }
         return TarefaDTO.criaTarefaDTO(tarefa);
+    }
+
+    public List<TarefaDTO> listaTarefasPendentes() throws Exception {
+        List<Tarefa> tarefas = gerenciadorTarefas.buscarTarefasPendentes();
+        List<TarefaDTO> tarefasDTOList = new ArrayList<>();
+
+        if (!tarefas.isEmpty()) {
+            for (Tarefa tarefa : tarefas) {
+                TarefaDTO tarefaDTO = TarefaDTO.criaTarefaDTO(tarefa);
+                tarefasDTOList.add(tarefaDTO);
+            }
+        }
+        return tarefasDTOList;
     }
 }
