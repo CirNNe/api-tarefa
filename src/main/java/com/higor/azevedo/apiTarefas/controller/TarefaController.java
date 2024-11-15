@@ -27,4 +27,10 @@ public class TarefaController {
         TarefaDTO tarefa = tarefaService.alocar(idTarefa, idPessoa);
         return ResponseEntity.status(HttpStatus.OK).body(tarefa);
     }
+
+    @PutMapping("/finalizar/{id}")
+    public ResponseEntity<TarefaDTO> finalizar(@PathVariable("id") Long id) throws Exception {
+        TarefaDTO tarefa = tarefaService.finalizar(id);
+        return ResponseEntity.status(HttpStatus.OK).body(tarefa);
+    }
 }

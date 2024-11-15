@@ -52,4 +52,12 @@ public class TarefaService {
 
         throw new Exception("Pessoa e tarefa pertencem a departamentos diferentes.");
     }
+
+    public TarefaDTO finalizar(Long id) throws Exception {
+        Tarefa tarefa = gerenciadorTarefas.buscarPorId(id);
+        tarefa.setConcluido(true);
+        gerenciadorTarefas.salvar(tarefa);
+        Pessoa pessoa = gerenciadorPessoas.buscarPorNome(tarefa.getPessoa().getNome());
+        return TarefaDTO.criaTarefaDTO(tarefa, pessoa.getNome());
+    }
 }

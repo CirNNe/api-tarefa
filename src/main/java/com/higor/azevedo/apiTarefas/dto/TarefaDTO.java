@@ -14,6 +14,7 @@ public record TarefaDTO(
         DepartamentoDTO departamento,
         String nomePessoa
 ) {
+
     public static TarefaDTO criaTarefaDTO(Tarefa tarefa, String nomePessoa) {
         DepartamentoDTO departamentoDTO = new DepartamentoDTO(tarefa.getDepartamento().getNome());
         return new TarefaDTO(
