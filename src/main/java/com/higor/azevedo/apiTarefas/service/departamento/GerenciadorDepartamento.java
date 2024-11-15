@@ -13,7 +13,7 @@ public class GerenciadorDepartamento {
         this.repository = repository;
     }
 
-    public Departamento buscarPorNome(String nome) {
-        return repository.findByNome(nome);
+    public Departamento buscarPorNome(String nome) throws Exception {
+        return repository.findByNome(nome).orElseThrow(() -> new Exception("Departamento não encontrado."));
     }
 }

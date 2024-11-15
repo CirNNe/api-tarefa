@@ -20,12 +20,12 @@ public class PessoaService {
         this.gerenciadorPessoas = gerenciadorPessoas;
     }
 
-    public void salvar(PessoaDTO pessoaDTO) {
-        Pessoa pessoa = new Pessoa();
-        pessoa.setNome(pessoaDTO.nome());
-        Departamento departamento = gerenciadorDepartamento.buscarPorNome(pessoaDTO.departamento());
+    public PessoaDTO salvar(PessoaDTO pessoaDTO) throws Exception {
+        Pessoa pessoa = new Pessoa(pessoaDTO);
+        Departamento departamento = gerenciadorDepartamento.buscarPorNome(pessoa.getDepartamento().getNome());
         pessoa.setDepartamento(departamento);
 
         gerenciadorPessoas.salvar(pessoa);
+        return pessoaDTO;
     }
 }
