@@ -27,4 +27,10 @@ public class PessoaController {
         PessoaDTO pessoa = pessoaService.atualizar(id, pessoaDTO);
         return ResponseEntity.status(HttpStatus.OK).body(pessoa);
     }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deletar(@PathVariable("id") Long id) throws Exception {
+        pessoaService.deletar(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Dados da pessoa deletados");
+    }
 }

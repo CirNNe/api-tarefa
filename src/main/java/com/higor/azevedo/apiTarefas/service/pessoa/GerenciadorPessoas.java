@@ -16,4 +16,12 @@ public class GerenciadorPessoas {
     public void salvar(Pessoa pessoa) {
         repository.save(pessoa);
     }
+
+    public void deletar(Pessoa pessoa) {
+        repository.delete(pessoa);
+    }
+
+    public Pessoa buscarPorId(Long id) throws Exception {
+        return repository.findById(id).orElseThrow(() -> new Exception("Pessoa não encontrada."));
+    }
 }

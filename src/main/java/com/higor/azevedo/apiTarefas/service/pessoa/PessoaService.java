@@ -38,4 +38,9 @@ public class PessoaService {
         gerenciadorPessoas.salvar(pessoa);
         return pessoaDTO;
     }
+
+    public void deletar(Long id) throws Exception {
+        Pessoa pessoa = gerenciadorPessoas.buscarPorId(id);
+        gerenciadorPessoas.deletar(pessoa);
+    }
 }
