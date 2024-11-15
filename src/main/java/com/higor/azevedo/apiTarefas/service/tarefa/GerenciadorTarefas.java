@@ -16,4 +16,8 @@ public class GerenciadorTarefas {
     public void salvar(Tarefa tarefa) {
         repository.save(tarefa);
     }
+
+    public Tarefa buscarPorId(Long id) throws Exception {
+        return repository.findById(id).orElseThrow(() -> new Exception("Tarefa não encontrada."));
+    }
 }
