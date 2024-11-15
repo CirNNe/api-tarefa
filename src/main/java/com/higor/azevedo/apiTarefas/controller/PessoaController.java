@@ -1,10 +1,13 @@
 package com.higor.azevedo.apiTarefas.controller;
 
 import com.higor.azevedo.apiTarefas.dto.PessoaDTO;
+import com.higor.azevedo.apiTarefas.dto.PessoaHorasGastasDTO;
 import com.higor.azevedo.apiTarefas.service.pessoa.PessoaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/pessoas")
@@ -32,5 +35,11 @@ public class PessoaController {
     public ResponseEntity<String> deletar(@PathVariable("id") Long id) throws Exception {
         pessoaService.deletar(id);
         return ResponseEntity.status(HttpStatus.OK).body("Dados da pessoa deletados");
+    }
+
+    @GetMapping
+    public ResponseEntity<List<PessoaHorasGastasDTO>> listar() {
+        List<PessoaHorasGastasDTO> pessoas = pessoaService.listarPessoas();
+        return ResponseEntity.status(HttpStatus.OK).body(pessoas);
     }
 }
