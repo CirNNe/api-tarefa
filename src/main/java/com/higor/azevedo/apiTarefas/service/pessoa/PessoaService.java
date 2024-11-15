@@ -22,7 +22,7 @@ public class PessoaService {
 
     public PessoaDTO salvar(PessoaDTO pessoaDTO) throws Exception {
         Pessoa pessoa = new Pessoa(pessoaDTO);
-        Departamento departamento = gerenciadorDepartamento.buscarPorNome(pessoa.getDepartamento().getNome());
+        Departamento departamento = gerenciadorDepartamento.buscarPorNome(pessoaDTO.departamento().nome());
         pessoa.setDepartamento(departamento);
 
         gerenciadorPessoas.salvar(pessoa);
