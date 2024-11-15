@@ -4,6 +4,8 @@ import com.higor.azevedo.apiTarefas.model.Pessoa;
 import com.higor.azevedo.apiTarefas.repository.PessoaRepository;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class GerenciadorPessoas {
 
@@ -27,5 +29,9 @@ public class GerenciadorPessoas {
 
     public Pessoa buscarPorNome(String nome) throws Exception {
         return repository.findByNome(String.valueOf(nome)).orElseThrow(() -> new Exception("Pessoa não encontrada."));
+    }
+
+    public List<Pessoa> listarTodos() {
+        return repository.findAll();
     }
 }
