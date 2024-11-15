@@ -39,4 +39,17 @@ public class TarefaService {
         gerenciadorTarefas.salvar(tarefa);
         return tarefaDTO;
     }
+
+    public TarefaDTO alocar(Long idTarefa, Long idPessoa) throws Exception {
+        Pessoa pessoa = gerenciadorPessoas.buscarPorId(idPessoa);
+        Tarefa tarefa = gerenciadorTarefas.buscarPorId(idTarefa);
+
+        if (pessoa.getDepartamento().getNome().equalsIgnoreCase(tarefa.getDepartamento().getNome())) {
+            tarefa.setPessoa(pessoa);
+            gerenciadorTarefas.salvar(tarefa);
+            return TarefaDTO.criaTarefaDTO(tarefa, pessoa.getNome());
+        }
+
+        throw new Exception("Pessoa e tarefa pertencem a departamentos diferentes.");
+    }
 }

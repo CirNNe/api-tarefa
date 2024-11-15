@@ -17,8 +17,14 @@ public class TarefaController {
     }
 
     @PostMapping
-    public ResponseEntity<String> salvar(@RequestBody TarefaDTO tarefaDTO) throws Exception {
+    public ResponseEntity<TarefaDTO> salvar(@RequestBody TarefaDTO tarefaDTO) throws Exception {
         TarefaDTO tarefa = tarefaService.salvar(tarefaDTO);
-        return ResponseEntity.status(HttpStatus.OK).body("Dados da tarefa salvos");
+        return ResponseEntity.status(HttpStatus.OK).body(tarefa);
+    }
+
+    @PutMapping("/alocar/{id}")
+    public ResponseEntity<TarefaDTO> alocarPessoa(@PathVariable("id") Long idTarefa, @RequestBody Long idPessoa) throws Exception {
+        TarefaDTO tarefa = tarefaService.alocar(idTarefa, idPessoa);
+        return ResponseEntity.status(HttpStatus.OK).body(tarefa);
     }
 }
