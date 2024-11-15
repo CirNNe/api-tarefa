@@ -1,5 +1,6 @@
 package com.higor.azevedo.apiTarefas.controller;
 
+import com.higor.azevedo.apiTarefas.dto.MediaHoraGastaPeriodoDTO;
 import com.higor.azevedo.apiTarefas.dto.PessoaDTO;
 import com.higor.azevedo.apiTarefas.dto.PessoaHorasGastasDTO;
 import com.higor.azevedo.apiTarefas.service.pessoa.PessoaService;
@@ -41,5 +42,11 @@ public class PessoaController {
     public ResponseEntity<List<PessoaHorasGastasDTO>> listar() {
         List<PessoaHorasGastasDTO> pessoas = pessoaService.listarPessoas();
         return ResponseEntity.status(HttpStatus.OK).body(pessoas);
+    }
+
+    @GetMapping("/gastos")
+    public ResponseEntity<Long> buscarMediaHorasGastasPorPeriodo(@RequestBody MediaHoraGastaPeriodoDTO mediaHoraGastaPeriodoDTO) throws Exception {
+        Long mediaHoraGastaTarefas = pessoaService.mediaHoraGastaPorPeriodo(mediaHoraGastaPeriodoDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(mediaHoraGastaTarefas);
     }
 }

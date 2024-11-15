@@ -1,5 +1,6 @@
 package com.higor.azevedo.apiTarefas.service.pessoa;
 
+import com.higor.azevedo.apiTarefas.dto.MediaHoraGastaPeriodoDTO;
 import com.higor.azevedo.apiTarefas.dto.PessoaDTO;
 import com.higor.azevedo.apiTarefas.dto.PessoaHorasGastasDTO;
 import com.higor.azevedo.apiTarefas.model.Departamento;
@@ -65,5 +66,12 @@ public class PessoaService {
             pessoaDTOList.add(pessoaHorasGastasDTO);
         }
         return pessoaDTOList;
+    }
+
+    public Long mediaHoraGastaPorPeriodo(MediaHoraGastaPeriodoDTO mediaHoraGastaPeriodoDTO) throws Exception {
+        Pessoa pessoa = gerenciadorPessoas.buscarPorNome(mediaHoraGastaPeriodoDTO.nome());
+        return gerenciadorTarefas.calculaMediaHoras(
+                pessoa, mediaHoraGastaPeriodoDTO.inicio(), mediaHoraGastaPeriodoDTO.fim()
+        );
     }
 }
