@@ -4,6 +4,8 @@ import com.higor.azevedo.apiTarefas.model.Tarefa;
 import com.higor.azevedo.apiTarefas.repository.TarefaRepository;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class GerenciadorTarefas {
 
@@ -19,5 +21,9 @@ public class GerenciadorTarefas {
 
     public Tarefa buscarPorId(Long id) throws Exception {
         return repository.findById(id).orElseThrow(() -> new Exception("Tarefa não encontrada."));
+    }
+
+    public List<Tarefa> buscarTarefasPendentes() throws Exception {
+       return repository.findTop3ByPessoaIsNullOrderByPrazoAsc().orElseThrow(() -> new Exception("Tarefas não encontradas."));
     }
 }
