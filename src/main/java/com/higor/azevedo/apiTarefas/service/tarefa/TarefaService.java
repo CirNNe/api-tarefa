@@ -64,8 +64,7 @@ public class TarefaService {
     }
 
     public TarefaDTO finalizar(Long id) {
-        Tarefa tarefa = new Tarefa();
-        tarefa.setId(id);
+        Tarefa tarefa = gerenciadorTarefas.buscarPorId(id);
         tarefa.setConcluido(true);
         gerenciadorTarefas.salvar(tarefa);
 
