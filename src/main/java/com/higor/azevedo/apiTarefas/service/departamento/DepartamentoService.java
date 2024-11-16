@@ -18,7 +18,8 @@ public class DepartamentoService {
     }
 
     public DepartamentoDTO salvar(DepartamentoDTO departamentoDTO) {
-        Departamento departamento = new Departamento(departamentoDTO);
+        Departamento departamento = new Departamento();
+        departamento.setNome(departamentoDTO.nome());
         gerenciadorDepartamento.salvar(departamento);
         return departamentoDTO;
     }

@@ -11,22 +11,22 @@ public record TarefaDTO(
         @JsonFormat(pattern = "dd/MM/yyyy") LocalDate prazo,
         Long duracao,
         boolean concluido,
-        DepartamentoDTO departamento,
-        String nomePessoa
+        Long idDepartamento,
+        Long idPessoa
 ) {
     public static TarefaDTO criaTarefaDTO(Tarefa tarefa) {
-        return criaTarefaDTO(tarefa, null, null);
+        return criaTarefaDTO(tarefa, null);
     }
 
-    public static TarefaDTO criaTarefaDTO(Tarefa tarefa, String nomePessoa, DepartamentoDTO departamentoDTO) {
+    public static TarefaDTO criaTarefaDTO(Tarefa tarefa, Long idPessoa) {
         return new TarefaDTO(
                 tarefa.getTitulo(),
                 tarefa.getDescricao(),
                 tarefa.getPrazo(),
                 tarefa.getDuracao(),
                 tarefa.isConcluido(),
-                departamentoDTO,
-                nomePessoa
+                tarefa.getDepartamento().getId(),
+                idPessoa
         );
     }
 }

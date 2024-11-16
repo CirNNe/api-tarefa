@@ -32,10 +32,7 @@ public class PessoaService {
 
     public PessoaDTO salvar(PessoaDTO pessoaDTO) {
         Pessoa pessoa = new Pessoa(pessoaDTO);
-        Departamento departamento = gerenciadorDepartamento.buscarPorNome(
-                pessoaDTO.departamento().nome()).orElseThrow(() -> new IllegalArgumentException(
-                gerenciadorDepartamento.DEPARTAMENTO_NAO_ENCONTRADO_MSG)
-        );
+        Departamento departamento = gerenciadorDepartamento.buscarPorId(pessoaDTO.idDepartamento());
         pessoa.setDepartamento(departamento);
 
         gerenciadorPessoas.salvar(pessoa);
@@ -45,10 +42,7 @@ public class PessoaService {
     public PessoaDTO atualizar(Long id, PessoaDTO pessoaDTO) {
         Pessoa pessoa = new Pessoa(pessoaDTO);
         pessoa.setId(id);
-        Departamento departamento = gerenciadorDepartamento.buscarPorNome(
-                pessoaDTO.departamento().nome()).orElseThrow(() -> new IllegalArgumentException(
-                        gerenciadorDepartamento.DEPARTAMENTO_NAO_ENCONTRADO_MSG)
-        );
+        Departamento departamento = gerenciadorDepartamento.buscarPorId(pessoaDTO.idDepartamento());
         pessoa.setDepartamento(departamento);
 
         gerenciadorPessoas.salvar(pessoa);
@@ -69,10 +63,9 @@ public class PessoaService {
         List<PessoaHorasGastasDTO> pessoaDTOList = new ArrayList<>();
         for (Pessoa pessoa : pessoaList) {
             Long horasTarefas = gerenciadorTarefas.calculaHorasTarefas(pessoa.getTarefas());
-            DepartamentoDTO departamentoDTO = new DepartamentoDTO(pessoa.getDepartamento().getNome());
             PessoaHorasGastasDTO pessoaHorasGastasDTO = PessoaHorasGastasDTO.criaPessoaHorasGastasDTO(
                     pessoa,
-                    departamentoDTO,
+                    pessoa.getDepartamento().getId(),
                     horasTarefas
             );
             pessoaDTOList.add(pessoaHorasGastasDTO);
