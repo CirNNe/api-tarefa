@@ -21,19 +21,19 @@ public class PessoaController {
     }
 
     @PostMapping
-    public ResponseEntity<PessoaDTO> salvar(@RequestBody PessoaDTO pessoaDTO) throws Exception {
+    public ResponseEntity<PessoaDTO> salvar(@RequestBody PessoaDTO pessoaDTO) {
         PessoaDTO pessoa = pessoaService.salvar(pessoaDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(pessoa);
+        return ResponseEntity.status(HttpStatus.CREATED).body(pessoa);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<PessoaDTO> atualizar(@PathVariable("id") Long id, @RequestBody PessoaDTO pessoaDTO) throws Exception {
+    public ResponseEntity<PessoaDTO> atualizar(@PathVariable("id") Long id, @RequestBody PessoaDTO pessoaDTO) {
         PessoaDTO pessoa = pessoaService.atualizar(id, pessoaDTO);
         return ResponseEntity.status(HttpStatus.OK).body(pessoa);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<String> deletar(@PathVariable("id") Long id) throws Exception {
+    public ResponseEntity<String> deletar(@PathVariable("id") Long id) {
         pessoaService.deletar(id);
         return ResponseEntity.status(HttpStatus.OK).body("Dados da pessoa deletados");
     }
@@ -45,7 +45,7 @@ public class PessoaController {
     }
 
     @GetMapping("/gastos")
-    public ResponseEntity<Long> buscarMediaHorasGastasPorPeriodo(@RequestBody MediaHoraGastaPeriodoDTO mediaHoraGastaPeriodoDTO) throws Exception {
+    public ResponseEntity<Long> buscarMediaHorasGastasPorPeriodo(@RequestBody MediaHoraGastaPeriodoDTO mediaHoraGastaPeriodoDTO) {
         Long mediaHoraGastaTarefas = pessoaService.mediaHoraGastaPorPeriodo(mediaHoraGastaPeriodoDTO);
         return ResponseEntity.status(HttpStatus.OK).body(mediaHoraGastaTarefas);
     }

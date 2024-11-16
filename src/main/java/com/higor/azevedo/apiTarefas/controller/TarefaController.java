@@ -19,25 +19,25 @@ public class TarefaController {
     }
 
     @PostMapping
-    public ResponseEntity<TarefaDTO> salvar(@RequestBody TarefaDTO tarefaDTO) throws Exception {
+    public ResponseEntity<TarefaDTO> salvar(@RequestBody TarefaDTO tarefaDTO) {
         TarefaDTO tarefa = tarefaService.salvar(tarefaDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(tarefa);
+        return ResponseEntity.status(HttpStatus.CREATED).body(tarefa);
     }
 
     @PutMapping("/alocar/{id}")
-    public ResponseEntity<TarefaDTO> alocar(@PathVariable("id") Long idTarefa, @RequestBody Long idPessoa) throws Exception {
+    public ResponseEntity<TarefaDTO> alocar(@PathVariable("id") Long idTarefa, @RequestBody Long idPessoa) {
         TarefaDTO tarefa = tarefaService.alocarPessoa(idTarefa, idPessoa);
         return ResponseEntity.status(HttpStatus.OK).body(tarefa);
     }
 
     @PutMapping("/finalizar/{id}")
-    public ResponseEntity<TarefaDTO> finalizar(@PathVariable("id") Long id) throws Exception {
+    public ResponseEntity<TarefaDTO> finalizar(@PathVariable("id") Long id) {
         TarefaDTO tarefa = tarefaService.finalizar(id);
         return ResponseEntity.status(HttpStatus.OK).body(tarefa);
     }
 
     @GetMapping("/pendentes")
-    public ResponseEntity<List<TarefaDTO>> pendentes() throws Exception {
+    public ResponseEntity<List<TarefaDTO>> pendentes() {
         List<TarefaDTO> tarefas = tarefaService.listaTarefasPendentes();
         return ResponseEntity.status(HttpStatus.OK).body(tarefas);
     }

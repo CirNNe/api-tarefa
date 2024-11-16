@@ -29,26 +29,32 @@ public class PessoaService {
         this.gerenciadorTarefas = gerenciadorTarefas;
     }
 
-    public PessoaDTO salvar(PessoaDTO pessoaDTO) throws Exception {
+    public PessoaDTO salvar(PessoaDTO pessoaDTO) {
         Pessoa pessoa = new Pessoa(pessoaDTO);
-        Departamento departamento = gerenciadorDepartamento.buscarPorNome(pessoaDTO.departamento().nome());
+        Departamento departamento = gerenciadorDepartamento.buscarPorNome(
+                pessoaDTO.departamento().nome()).orElseThrow(() -> new IllegalArgumentException(
+                gerenciadorDepartamento.DEPARTAMENTO_NAO_ENCONTRADO_MSG)
+        );
         pessoa.setDepartamento(departamento);
 
         gerenciadorPessoas.salvar(pessoa);
         return pessoaDTO;
     }
 
-    public PessoaDTO atualizar(Long id, PessoaDTO pessoaDTO) throws Exception {
+    public PessoaDTO atualizar(Long id, PessoaDTO pessoaDTO) {
         Pessoa pessoa = new Pessoa(pessoaDTO);
         pessoa.setId(id);
-        Departamento departamento = gerenciadorDepartamento.buscarPorNome(pessoaDTO.departamento().nome());
+        Departamento departamento = gerenciadorDepartamento.buscarPorNome(
+                pessoaDTO.departamento().nome()).orElseThrow(() -> new IllegalArgumentException(
+                        gerenciadorDepartamento.DEPARTAMENTO_NAO_ENCONTRADO_MSG)
+        );
         pessoa.setDepartamento(departamento);
 
         gerenciadorPessoas.salvar(pessoa);
         return pessoaDTO;
     }
 
-    public void deletar(Long id) throws Exception {
+    public void deletar(Long id) {
         Pessoa pessoa = gerenciadorPessoas.buscarPorId(id);
         gerenciadorPessoas.deletar(pessoa);
     }
@@ -68,7 +74,7 @@ public class PessoaService {
         return pessoaDTOList;
     }
 
-    public Long mediaHoraGastaPorPeriodo(MediaHoraGastaPeriodoDTO mediaHoraGastaPeriodoDTO) throws Exception {
+    public Long mediaHoraGastaPorPeriodo(MediaHoraGastaPeriodoDTO mediaHoraGastaPeriodoDTO) {
         Pessoa pessoa = gerenciadorPessoas.buscarPorNome(mediaHoraGastaPeriodoDTO.nome());
         return gerenciadorTarefas.calculaMediaHoras(
                 pessoa, mediaHoraGastaPeriodoDTO.inicio(), mediaHoraGastaPeriodoDTO.fim()

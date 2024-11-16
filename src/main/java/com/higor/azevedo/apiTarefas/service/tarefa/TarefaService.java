@@ -30,10 +30,13 @@ public class TarefaService {
         this.gerenciadorPessoas = gerenciadorPessoas;
     }
 
-    public TarefaDTO salvar(TarefaDTO tarefaDTO) throws Exception {
+    public TarefaDTO salvar(TarefaDTO tarefaDTO) {
         Tarefa tarefa = new Tarefa(tarefaDTO);
 
-        Departamento departamento = gerenciadorDepartamento.buscarPorNome(tarefaDTO.departamento().nome());
+        Departamento departamento = gerenciadorDepartamento.buscarPorNome(
+                tarefaDTO.departamento().nome()).orElseThrow(() -> new IllegalArgumentException(
+                gerenciadorDepartamento.DEPARTAMENTO_NAO_ENCONTRADO_MSG)
+        );
         tarefa.setDepartamento(departamento);
 
         if (tarefaDTO.nomePessoa() != null) {
@@ -44,7 +47,7 @@ public class TarefaService {
         return tarefaDTO;
     }
 
-    public TarefaDTO alocarPessoa(Long idTarefa, Long idPessoa) throws Exception {
+    public TarefaDTO alocarPessoa(Long idTarefa, Long idPessoa) {
         Pessoa pessoa = gerenciadorPessoas.buscarPorId(idPessoa);
         Tarefa tarefa = gerenciadorTarefas.buscarPorId(idTarefa);
         Departamento departamentoPessoa = pessoa.getDepartamento();
@@ -55,11 +58,12 @@ public class TarefaService {
             gerenciadorTarefas.salvar(tarefa);
             return TarefaDTO.criaTarefaDTO(tarefa, pessoa.getNome());
         }
-        throw new Exception("Pessoa e tarefa pertencem a departamentos diferentes.");
+        throw new IllegalArgumentException("Pessoa e tarefa pertencem a departamentos diferentes.");
     }
 
-    public TarefaDTO finalizar(Long id) throws Exception {
-        Tarefa tarefa = gerenciadorTarefas.buscarPorId(id);
+    public TarefaDTO finalizar(Long id) {
+        Tarefa tarefa = new Tarefa();
+        tarefa.setId(id);
         tarefa.setConcluido(true);
         gerenciadorTarefas.salvar(tarefa);
 
@@ -70,7 +74,7 @@ public class TarefaService {
         return TarefaDTO.criaTarefaDTO(tarefa);
     }
 
-    public List<TarefaDTO> listaTarefasPendentes() throws Exception {
+    public List<TarefaDTO> listaTarefasPendentes() {
         List<Tarefa> tarefas = gerenciadorTarefas.buscarTarefasPendentes();
         List<TarefaDTO> tarefasDTOList = new ArrayList<>();
 
