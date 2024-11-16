@@ -7,6 +7,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -55,6 +56,6 @@ public class GerenciadorTarefas {
     }
 
     public List<Tarefa> buscarTarefasPorPeriodo(Pessoa pessoa, LocalDate inicio, LocalDate fim) {
-        return repository.findByPessoaAndPrazoBetween(pessoa, inicio, fim).orElseThrow(() -> new EntityNotFoundException(TAREFA_NAO_ENCONTRADA_MSG));
+        return repository.findByPessoaAndPrazoBetween(pessoa, inicio, fim).orElse(new ArrayList<>());
     }
 }
