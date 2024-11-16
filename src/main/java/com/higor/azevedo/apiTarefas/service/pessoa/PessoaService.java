@@ -1,5 +1,6 @@
 package com.higor.azevedo.apiTarefas.service.pessoa;
 
+import com.higor.azevedo.apiTarefas.dto.DepartamentoDTO;
 import com.higor.azevedo.apiTarefas.dto.MediaHoraGastaPeriodoDTO;
 import com.higor.azevedo.apiTarefas.dto.PessoaDTO;
 import com.higor.azevedo.apiTarefas.dto.PessoaHorasGastasDTO;
@@ -61,12 +62,17 @@ public class PessoaService {
 
     public List<PessoaHorasGastasDTO> listarPessoas() {
         List<Pessoa> pessoas = gerenciadorPessoas.listarTodos();
-        List<PessoaHorasGastasDTO> pessoaDTOList = new ArrayList<>();
+        return criaListaPessoaHoraGastasDTO(pessoas);
+    }
 
-        for (Pessoa pessoa : pessoas) {
+    private List<PessoaHorasGastasDTO> criaListaPessoaHoraGastasDTO(List<Pessoa> pessoaList) {
+        List<PessoaHorasGastasDTO> pessoaDTOList = new ArrayList<>();
+        for (Pessoa pessoa : pessoaList) {
             Long horasTarefas = gerenciadorTarefas.calculaHorasTarefas(pessoa.getTarefas());
+            DepartamentoDTO departamentoDTO = new DepartamentoDTO(pessoa.getDepartamento().getNome());
             PessoaHorasGastasDTO pessoaHorasGastasDTO = PessoaHorasGastasDTO.criaPessoaHorasGastasDTO(
                     pessoa,
+                    departamentoDTO,
                     horasTarefas
             );
             pessoaDTOList.add(pessoaHorasGastasDTO);
