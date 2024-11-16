@@ -1,8 +1,8 @@
 package com.higor.azevedo.apiTarefas.service.departamento;
 
+import com.higor.azevedo.apiTarefas.dto.DepartamentoDTO;
 import com.higor.azevedo.apiTarefas.dto.DepartamentoPessoasTarefasDTO;
 import com.higor.azevedo.apiTarefas.model.Departamento;
-import com.higor.azevedo.apiTarefas.repository.DepartamentoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -11,14 +11,20 @@ import java.util.List;
 @Service
 public class DepartamentoService {
 
-    private final DepartamentoRepository repository;
+    private final GerenciadorDepartamento gerenciadorDepartamento;
 
-    public DepartamentoService(DepartamentoRepository repository) {
-        this.repository = repository;
+    public DepartamentoService(GerenciadorDepartamento gerenciadorDepartamento) {
+        this.gerenciadorDepartamento = gerenciadorDepartamento;
+    }
+
+    public DepartamentoDTO salvar(DepartamentoDTO departamentoDTO) {
+        Departamento departamento = new Departamento(departamentoDTO);
+        gerenciadorDepartamento.salvar(departamento);
+        return departamentoDTO;
     }
 
     public List<DepartamentoPessoasTarefasDTO> listarDepartamentos() {
-        List<Departamento> departamentos = repository.findAll();
+        List<Departamento> departamentos = gerenciadorDepartamento.listarTodos();
         List<DepartamentoPessoasTarefasDTO> departamentoPessoasTarefasDTOS = new ArrayList<>();
 
         for (Departamento departamento : departamentos) {
