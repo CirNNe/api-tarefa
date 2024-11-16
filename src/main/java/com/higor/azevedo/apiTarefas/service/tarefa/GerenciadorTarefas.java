@@ -12,7 +12,7 @@ import java.util.List;
 @Component
 public class GerenciadorTarefas {
 
-    final String TAREFA_NAO_ENCONTRADA_MSG = "Tarefas não encontradas.";
+    final String TAREFA_NAO_ENCONTRADA_MSG = "Tarefa não encontrada.";
 
     private final TarefaRepository repository;
 
