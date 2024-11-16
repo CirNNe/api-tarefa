@@ -42,67 +42,75 @@ class PessoaServiceTest {
     private static final String PESSOA_NAO_ENCONTRADA_MSG = "Pessoa não encontrada.";
     private static final String DEPARTAMENTO_NAO_ENCONTRADO_MSG = "Departamento não encontrado";
 
-    DepartamentoDTO departamentoDTO;
     TarefaDTO tarefaDTO;
     PessoaDTO pessoaDTO;
 
     @BeforeEach
     void setup() {
         MockitoAnnotations.initMocks(this);
-        departamentoDTO = new DepartamentoDTO("Desenvolviemento");
         tarefaDTO = new TarefaDTO(
                 "Desenvolver API",
                 "Desenvolver API de tarefas",
                 LocalDate.of(2024, 11, 15),
                 0L,
                 false,
-                departamentoDTO,
-                "João Dev"
+                1L,
+                1L
         );
-        pessoaDTO = new PessoaDTO("João Dev", departamentoDTO);
+        pessoaDTO = new PessoaDTO("João Dev", 1L);
     }
 
     @Test
     @DisplayName("Deve salvar dados de pessoa com sucesso")
     void salvar_deveSalvarPessoaComSucesso() {
-        Departamento departamento = new Departamento(departamentoDTO);
-        when(gerenciadorDepartamento.buscarPorNome(departamentoDTO.nome())).thenReturn(Optional.of(departamento));
+        Departamento departamento = new Departamento();
+        departamento.setNome("Desenvolviemento");
+        departamento.setId(1L);
+
+        when(gerenciadorDepartamento.buscarPorId(departamento.getId())).thenReturn(departamento);
 
         PessoaDTO resultado = pessoaService.salvar(pessoaDTO);
 
         assertNotNull(resultado);
         assertEquals(pessoaDTO, resultado);
 
-        verify(gerenciadorDepartamento, times(1)).buscarPorNome(departamentoDTO.nome());
+        verify(gerenciadorDepartamento, times(1)).buscarPorId(departamento.getId());
         verify(gerenciadorPessoas, times(1)).salvar(any(Pessoa.class));
     }
 
     @Test
     @DisplayName("Deve lançar exceção ao tentar salvar dados de pessoa")
     void salvar_deveLancarExcecaoQuandoDepartamentoNaoExiste() {
-        when(gerenciadorDepartamento.buscarPorNome(departamentoDTO.nome())).thenReturn(Optional.empty());
+        Long id = 1L;
 
-        IllegalArgumentException execption = assertThrows(IllegalArgumentException.class, () -> pessoaService.salvar(pessoaDTO));
-        assertEquals(DEPARTAMENTO_NAO_ENCONTRADO_MSG, execption.getMessage());
+        when(gerenciadorDepartamento.buscarPorId(id)).thenThrow(new IllegalArgumentException(DEPARTAMENTO_NAO_ENCONTRADO_MSG));
 
-        verify(gerenciadorDepartamento, times(1)).buscarPorNome(departamentoDTO.nome());
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+                () -> pessoaService.salvar(pessoaDTO));
+
+        assertEquals(DEPARTAMENTO_NAO_ENCONTRADO_MSG, exception.getMessage());
+
+        verify(gerenciadorDepartamento, times(1)).buscarPorId(id);
+
         verifyNoInteractions(gerenciadorPessoas);
     }
+
 
     @Test
     @DisplayName("Deve atualizar os dados de uma pessoa com sucesso")
     void atualizar_deveAtualizarDadosDeUmaPessoaComSucesso() {
         Long id = 1L;
-        Departamento departamento = new Departamento(departamentoDTO);
+        Departamento departamento = new Departamento();
+        departamento.setNome("Desenvolviemento");
 
-        when(gerenciadorDepartamento.buscarPorNome(departamentoDTO.nome())).thenReturn(Optional.of(departamento));
+        when(gerenciadorDepartamento.buscarPorId(id)).thenReturn(departamento);
 
         PessoaDTO resultado = pessoaService.atualizar(id, pessoaDTO);
 
         assertNotNull(resultado);
         assertEquals(pessoaDTO, resultado);
 
-        verify(gerenciadorDepartamento, times(1)).buscarPorNome(departamentoDTO.nome());
+        verify(gerenciadorDepartamento, times(1)).buscarPorId(id);
         verify(gerenciadorPessoas).salvar(argThat(pessoa ->
                 pessoa.getId().equals(id) && pessoa.getDepartamento().equals(departamento)
         ));
@@ -113,16 +121,18 @@ class PessoaServiceTest {
     void atualizar_deveLancarExcecaoQuandoDepartamentoNaoExiste() {
         Long id = 1L;
 
-        when(gerenciadorDepartamento.buscarPorNome(departamentoDTO.nome())).thenReturn(Optional.empty());
+        when(gerenciadorDepartamento.buscarPorId(id)).thenThrow(new IllegalArgumentException(DEPARTAMENTO_NAO_ENCONTRADO_MSG));
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
                 () -> pessoaService.atualizar(id, pessoaDTO));
 
         assertEquals(DEPARTAMENTO_NAO_ENCONTRADO_MSG, exception.getMessage());
 
-        verify(gerenciadorDepartamento, times(1)).buscarPorNome(departamentoDTO.nome());
+        verify(gerenciadorDepartamento, times(1)).buscarPorId(id);
+
         verifyNoInteractions(gerenciadorPessoas);
     }
+
 
     @Test
     @DisplayName("Deve deletar dados de uma pessoa com sucesso")
@@ -159,7 +169,10 @@ class PessoaServiceTest {
     @Test
     @DisplayName("Deve retornar lista de pessoas acompanhado do total de horas gastas em tarefas")
     void listarPessoas_DeveRetornarListaDePessoasHorasGastasDTO() {
-        Departamento departamento = new Departamento(departamentoDTO);
+        Departamento departamento = new Departamento();
+        departamento.setNome("Desenvolviemento");
+        departamento.setId(1L);
+
         Tarefa tarefa = new Tarefa(tarefaDTO);
 
         Pessoa pessoaUm = new Pessoa();

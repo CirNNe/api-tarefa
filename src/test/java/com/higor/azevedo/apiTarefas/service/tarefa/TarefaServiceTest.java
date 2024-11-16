@@ -42,42 +42,43 @@ class TarefaServiceTest {
     @InjectMocks
     private TarefaService tarefaService;
 
-    DepartamentoDTO departamentoDTO;
     TarefaDTO tarefaDTO;
     PessoaDTO pessoaDTO;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        departamentoDTO = new DepartamentoDTO("Desenvolvimento");
         tarefaDTO = new TarefaDTO(
                 "Desenvolver API",
                 "Desenvolver API de tarefas",
                 LocalDate.of(2024, 11, 15),
                 0L,
                 false,
-                departamentoDTO,
-                "João Dev"
+                1L,
+                1L
         );
-        pessoaDTO = new PessoaDTO("João Dev", departamentoDTO);
+        pessoaDTO = new PessoaDTO("João Dev", 1L);
     }
 
     @Test
     @DisplayName("Deve salvar uma tarefa com sucesso")
     void salvar_deveSalvarTarefaComSucesso() {
-        Departamento departamento = new Departamento(departamentoDTO);
+        Departamento departamento = new Departamento();
+        departamento.setNome("Desenvolvimento");
+        departamento.setId(1L);
         Pessoa pessoa = new Pessoa(pessoaDTO);
+        pessoa.setId(1L);
 
-        when(gerenciadorDepartamento.buscarPorNome(departamento.getNome())).thenReturn(Optional.of(departamento));
-        when(gerenciadorPessoas.buscarPorNome(pessoa.getNome())).thenReturn(pessoa);
+        when(gerenciadorDepartamento.buscarPorId(departamento.getId())).thenReturn(departamento);
+        when(gerenciadorPessoas.buscarPorId(pessoa.getId())).thenReturn(pessoa);
 
         TarefaDTO resultado = tarefaService.salvar(tarefaDTO);
 
         assertNotNull(resultado);
 
-        verify(gerenciadorDepartamento).buscarPorNome("Desenvolvimento");
-        verify(gerenciadorPessoas).buscarPorNome("João Dev");
-        verify(gerenciadorTarefas).salvar(any(Tarefa.class));
+        verify(gerenciadorDepartamento, times(1)).buscarPorId(1L);
+        verify(gerenciadorPessoas, times(1)).buscarPorId(1L);
+        verify(gerenciadorTarefas, times(1)).salvar(any(Tarefa.class));
     }
 
     @Test
@@ -85,7 +86,8 @@ class TarefaServiceTest {
     void alocarPessoa_deveAlocarUmaPessoaATarefaComSucesso() {
         Long idTarefa = 1L;
         Long idPessoa = 1L;
-        Departamento departamento = new Departamento(departamentoDTO);
+        Departamento departamento = new Departamento();
+        departamento.setNome("Desenvolvimento");
         Pessoa pessoa = new Pessoa();
         pessoa.setDepartamento(departamento);
         Tarefa tarefa = new Tarefa();
@@ -97,7 +99,7 @@ class TarefaServiceTest {
         TarefaDTO resultado = tarefaService.alocarPessoa(idTarefa, idPessoa);
 
         assertNotNull(resultado);
-        assertEquals(pessoa.getNome(), resultado.nomePessoa());
+        assertEquals(pessoa.getId(), resultado.idPessoa());
         verify(gerenciadorTarefas, times(1)).salvar(tarefa);
     }
 
@@ -106,7 +108,8 @@ class TarefaServiceTest {
     void alocarPessoa_deveLancarExecaoDiferentesDepartamentos() {
         Long idTarefa = 1L;
         Long idPessoa = 1L;
-        Departamento departamento = new Departamento(departamentoDTO);
+        Departamento departamento = new Departamento();
+        departamento.setNome("Desenvolvimento");
         Departamento departamentoDiferente = new Departamento();
         departamentoDiferente.setNome("Departamento diferente");
 
@@ -132,7 +135,8 @@ class TarefaServiceTest {
     void alocarPessoa_deveLancarExcecaoTarefaNaoEncontrada() {
         Long idTarefa = 1L;
         Long idPessoa = 1L;
-        Departamento departamento = new Departamento(departamentoDTO);
+        Departamento departamento = new Departamento();
+        departamento.setNome("Desenvolvimento");
         Pessoa pessoa = new Pessoa();
         pessoa.setDepartamento(departamento);
         Tarefa tarefa = new Tarefa();
@@ -154,7 +158,9 @@ class TarefaServiceTest {
         Long idTarefa = 1L;
         Long idPessoa = 1L;
 
-        Departamento departamento = new Departamento(departamentoDTO);
+        Departamento departamento = new Departamento();
+        departamento.setNome("Desenvolvimento");
+        departamento.setId(1L);
 
         Pessoa pessoa = new Pessoa();
         pessoa.setId(idPessoa);
@@ -173,22 +179,28 @@ class TarefaServiceTest {
 
         assertNotNull(resultado);
         assertTrue(tarefa.isConcluido());
-        assertEquals(pessoa.getNome(), resultado.nomePessoa());
-        assertEquals(departamento.getNome(), resultado.departamento().nome());
-        verify(gerenciadorTarefas).salvar(tarefa);
-        verify(gerenciadorPessoas).buscarPorId(idPessoa);
+        assertEquals(pessoa.getId(), resultado.idPessoa());
+        assertEquals(departamento.getId(), resultado.idDepartamento());
+        verify(gerenciadorTarefas, times(1)).salvar(tarefa);
+        verify(gerenciadorPessoas, times(1)).buscarPorId(idPessoa);
     }
 
     @Test
     @DisplayName("Deve retornar uma lista de tarefas DTO quando houver tarefas pendentes")
     void listaTarefasPendentes_deveRetornarListaComTarefas() {
+        Departamento departamento = new Departamento();
+        departamento.setNome("Desenvolvimento");
+        departamento.setId(1L);
+
         Tarefa tarefa1 = new Tarefa();
         tarefa1.setTitulo("Tarefa 1");
         tarefa1.setConcluido(false);
+        tarefa1.setDepartamento(departamento);
 
         Tarefa tarefa2 = new Tarefa();
         tarefa2.setTitulo("Tarefa 2");
         tarefa2.setConcluido(false);
+        tarefa2.setDepartamento(departamento);
 
         List<Tarefa> tarefasPendentes = Arrays.asList(tarefa1, tarefa2);
 

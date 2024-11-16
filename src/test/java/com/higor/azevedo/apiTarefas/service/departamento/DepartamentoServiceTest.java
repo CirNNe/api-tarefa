@@ -47,10 +47,10 @@ class DepartamentoServiceTest {
                 LocalDate.of(2024, 11, 15),
                 0L,
                 false,
-                departamentoDTO,
-                "João Dev"
+                1L,
+                1L
         );
-        pessoaDTO = new PessoaDTO("João Dev", departamentoDTO);
+        pessoaDTO = new PessoaDTO("João Dev", 1L);
     }
 
     @Test
