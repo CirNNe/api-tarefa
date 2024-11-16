@@ -2,7 +2,6 @@ package com.higor.azevedo.apiTarefas.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.higor.azevedo.apiTarefas.dto.DepartamentoDTO;
-import com.higor.azevedo.apiTarefas.repository.DepartamentoRepository;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,7 +20,7 @@ public class Departamento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nome", nullable = false)
+    @Column(name = "nome", unique = true, nullable = false)
     @JsonBackReference
     private String nome;
 
