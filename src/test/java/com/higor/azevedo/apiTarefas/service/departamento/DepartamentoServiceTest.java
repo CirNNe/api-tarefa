@@ -55,15 +55,15 @@ class DepartamentoServiceTest {
 
     @Test
     @DisplayName("Deve salvar um departamento com sucesso")
-    void salvaComSucesso() {
+    void salva_deSalvarNovoDepartamentoComSucesso() {
         departamentoService.salvar(departamentoDTO);
 
         verify(gerenciadorDepartamento, times(1)).salvar(any());
     }
 
     @Test
-    @DisplayName("Deve lançar exceção ao tentar salvar")
-    void falhaSalvar() {
+    @DisplayName("Deve lançar exceção ao tentar salvar um departamento")
+    void salvar_deveLancarExcecaoAoTentarSalvarNovoDepartamento() {
         doThrow(DataIntegrityViolationException.class).when(gerenciadorDepartamento).salvar(any());
 
         assertThrows(DataIntegrityViolationException.class, () -> departamentoService.salvar(departamentoDTO));
@@ -73,7 +73,7 @@ class DepartamentoServiceTest {
 
     @Test
     @DisplayName("Deve listar departamentos e a quantidade de pessoas e tarefas associadas a ele com sucesso")
-    void listarDepartamentos() {
+    void listar_deveListarTodosDepartamentos() {
         Departamento departamentoUm = new Departamento(
                 1L,
                 "Desenvolvimento",
