@@ -15,11 +15,10 @@ public record TarefaDTO(
         String nomePessoa
 ) {
     public static TarefaDTO criaTarefaDTO(Tarefa tarefa) {
-        return criaTarefaDTO(tarefa, null);
+        return criaTarefaDTO(tarefa, null, null);
     }
 
-    public static TarefaDTO criaTarefaDTO(Tarefa tarefa, String nomePessoa) {
-        DepartamentoDTO departamentoDTO = new DepartamentoDTO(tarefa.getDepartamento().getNome());
+    public static TarefaDTO criaTarefaDTO(Tarefa tarefa, String nomePessoa, DepartamentoDTO departamentoDTO) {
         return new TarefaDTO(
                 tarefa.getTitulo(),
                 tarefa.getDescricao(),

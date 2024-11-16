@@ -1,5 +1,6 @@
 package com.higor.azevedo.apiTarefas.service.tarefa;
 
+import com.higor.azevedo.apiTarefas.dto.DepartamentoDTO;
 import com.higor.azevedo.apiTarefas.dto.TarefaDTO;
 import com.higor.azevedo.apiTarefas.model.Departamento;
 import com.higor.azevedo.apiTarefas.model.Pessoa;
@@ -56,7 +57,8 @@ public class TarefaService {
         if (departamentoPessoa == departamentoTarefa) {
             tarefa.setPessoa(pessoa);
             gerenciadorTarefas.salvar(tarefa);
-            return TarefaDTO.criaTarefaDTO(tarefa, pessoa.getNome());
+            DepartamentoDTO departamentoDTO = new DepartamentoDTO(departamentoTarefa.getNome());
+            return TarefaDTO.criaTarefaDTO(tarefa, pessoa.getNome(), departamentoDTO);
         }
         throw new IllegalArgumentException("Pessoa e tarefa pertencem a departamentos diferentes.");
     }
@@ -69,7 +71,8 @@ public class TarefaService {
 
         if (tarefa.getPessoa() != null) {
             Pessoa pessoa = gerenciadorPessoas.buscarPorId(tarefa.getPessoa().getId());
-            return TarefaDTO.criaTarefaDTO(tarefa, pessoa.getNome());
+            DepartamentoDTO departamentoDTO = new DepartamentoDTO(tarefa.getDepartamento().getNome());
+            return TarefaDTO.criaTarefaDTO(tarefa, pessoa.getNome(), departamentoDTO);
         }
         return TarefaDTO.criaTarefaDTO(tarefa);
     }
