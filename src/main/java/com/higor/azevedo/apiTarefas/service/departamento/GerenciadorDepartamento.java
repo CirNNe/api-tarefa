@@ -2,6 +2,7 @@ package com.higor.azevedo.apiTarefas.service.departamento;
 
 import com.higor.azevedo.apiTarefas.model.Departamento;
 import com.higor.azevedo.apiTarefas.repository.DepartamentoRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -20,6 +21,10 @@ public class GerenciadorDepartamento {
 
     public Optional<Departamento> buscarPorNome(String nome) {
         return repository.findByNome(nome);
+    }
+
+    public Departamento buscarPorId(Long id) {
+        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException(DEPARTAMENTO_NAO_ENCONTRADO_MSG));
     }
 
     public void salvar(Departamento departamento) {
