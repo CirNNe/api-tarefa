@@ -14,11 +14,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -55,6 +57,16 @@ class DepartamentoServiceTest {
     @DisplayName("Deve salvar um departamento com sucesso")
     void salvaComSucesso() {
         departamentoService.salvar(departamentoDTO);
+
+        verify(gerenciadorDepartamento, times(1)).salvar(any());
+    }
+
+    @Test
+    @DisplayName("Deve lançar exceção ao tentar salvar")
+    void falhaSalvar() {
+        doThrow(DataIntegrityViolationException.class).when(gerenciadorDepartamento).salvar(any());
+
+        assertThrows(DataIntegrityViolationException.class, () -> departamentoService.salvar(departamentoDTO));
 
         verify(gerenciadorDepartamento, times(1)).salvar(any());
     }
